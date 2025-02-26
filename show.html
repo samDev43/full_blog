@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipe Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slide-container {
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+           ; /* Adjust width to fit all pages */
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden bg-gray-900 text-white flex justify-center items-center">
+
+    <div id="slider" class="slide-container">
+        <div class="w-[80vh] slide bg--500">Page </div>
+        <div class="w-[100vh] slide bg-blue-500">Page 1</div>
+        <div class="w-[100vh] slide bg-green-500">Page 2</div>
+        <div class="w-[100vh]slide bg-red-500">Page 3</div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentIndex = 0;
+            const slider = document.getElementById("slider");
+            const totalPages = document.querySelectorAll(".slide").length;
+            let startX = 0;
+            let isDragging = false;
+
+            // TOUCH EVENTS (For Mobile)
+            document.addEventListener("touchstart", (e) => {
+                startX = e.touches[0].clientX;
+                console.log(e.touches); // Logs all active touches
+                console.log(e.touches[0]); // Logs first touch point
+                console.log(e.touches[0].clientX);
+            });
+
+            document.addEventListener("touchend", (e) => {
+                let endX = e.changedTouches[0].clientX;
+                handleSwipe(startX, endX);
+            });
+
+            // MOUSE EVENTS (For Desktop)
+            document.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                console.log(e.clientX);
+            });
+
+            document.addEventListener("mouseup", (e) => {
+                if (isDragging) {
+                    handleSwipe(startX, e.clientX);
+                    isDragging = false;
+                    console.log(e.clientX);
+                }
+            });
+
+            function handleSwipe(start, end) {
+                if (start - end > 50 && currentIndex < totalPages - 1) {
+                    currentIndex++; // Swipe Left (Next)
+                } else if (end - start > 50 && currentIndex > 0) {
+                    currentIndex--; // Swipe Right (Previous)
+                }
+                slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .comment-box {
+            width: 300px;
+            margin-bottom: 10px;
+        }
+        .comment-container {
+            margin-top: 10px;
+        }
+        .comment {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Leave a Comment</h2>
+    <textarea id="commentInput" class="comment-box" placeholder="Write your comment..."></textarea><br>
+    <button onclick="addComment()">Submit</button>
+
+    <div class="comment-container" id="comments"></div>
+
+    <script>
+        function addComment() {
+            let commentInput = document.getElementById("commentInput");
+            let commentText = commentInput.value.trim();
+            
+            if (commentText === "") {
+                alert("Please enter a comment.");
+                return;
+            }
+
+            let commentContainer = document.getElementById("comments");
+            let newComment = document.createElement("div");
+            newComment.classList.add("comment");
+            newComment.textContent = commentText;
+
+            commentContainer.appendChild(newComment);
+            commentInput.value = ""; // Clear the input field
+        }
+    </script>
+
+</body>
+</html>

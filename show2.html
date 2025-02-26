@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipe Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slide-container {
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            width: 300vw; /* Adjust width to fit all pages */
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="h-screen w-[80%] overflow-hidden bg-gray-900 text-white flex justify-center items-center">
+
+    <div id="slider" class="slide-container">
+        <div class="slide bg-blue-500">Page 1</div>
+        <div class="slide bg-green-500">Page 2</div>
+        <div class="slide bg-red-500">Page 3</div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentIndex = 0;
+            const slider = document.getElementById("slider");
+            const totalPages = document.querySelectorAll(".slide").length;
+            let startX = 0;
+
+            document.addEventListener("touchstart", (e) => {
+                startX = e.touches[0].clientX;
+            });
+
+            document.addEventListener("touchend", (e) => {
+                let endX = e.changedTouches[0].clientX;
+                if (startX - endX > 50 && currentIndex < totalPages - 1) {
+                    currentIndex++; // Swipe Left (Next)
+                } else if (endX - startX > 50 && currentIndex > 0) {
+                    currentIndex--; // Swipe Right (Previous)
+                }
+                slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
+            });
+        });
+    </script>
+
+</body>
+</html>
