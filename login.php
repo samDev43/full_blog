@@ -19,6 +19,6 @@ $password = $data['password'] ?? null;
 
 $login->login($userNPhone, $password);
 
-// echo json_encode($responce);
+// echo json_encode($responce);working on blog
 
 ?>
