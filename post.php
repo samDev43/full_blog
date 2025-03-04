@@ -53,16 +53,28 @@ if(isset($_POST["submit"])){
     $username = $result->fetch_assoc();
     // echo $_SESSION['user']['id']
     ?>
+
+            <?php 
+                $personID = $_SESSION['user']['id'];
+                $con = $pot->con();
+                  $select = 'SELECT * FROM project WHERE id = ?';
+                $stmt =  $con->prepare($select);
+                $stmt->bind_param('s', $personID);
+                $stmt->execute();
+            
+                $result = $stmt->get_result();
+                $username = $result->fetch_assoc();
+            ?>
   <form  method='POST' enctype="multipart/form-data">
   <div class="h-[60%] flex justify-center items-center ">
-      <div class="w-[40%] h-[60%] bg-white shadow-lg">
+      <div class="w-full md:w-[60%] lg:w-[40%] h-[60%] bg-white shadow-lg">
         <div class="flex items-center justify-between borer border-b border-black">
             <p></p>
             <p class="font-bold text-center p-2">Create post</p>
-            <p class="text-end p-2"><i class="bi bi-x-circle text-2xl"></i></p>
+            <p id="toHomePage" class="text-end p-2"><i class="bi bi-x-circle text-2xl"></i></p>
         </div>
         <div class="flex items-center gap-5 mx-5">
-            <div class="w-[50px] h-[50px] rounded-full overflow-hidden my-2"><img class="w-full h-full" src="" alt=""></div>
+            <div class="w-[50px] h-[50px] rounded-full overflow-hidden my-2"><img class="w-full h-full" src="<?php echo $username['profile_picture'] ?>" alt=""></div>
             <p><?php echo $username['username'] ?></p>
         </div>
         <div class="m-5">
@@ -86,5 +98,10 @@ if(isset($_POST["submit"])){
       </div>
    </div>
   </form>
+  <script>
+    document.getElementById('toHomePage').addEventListener('click',()=>{
+        location.href='http://localhost/blog_project/homePage.php';
+    })
+  </script>
 </body>
 </html>

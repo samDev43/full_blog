@@ -3,6 +3,8 @@ include('controller/AultUserControler.php');
 if(!isset($_SESSION['user']['id'])){
     echo 'sign up or login to use this website';
     exit;
+}else{
+    // echo $_SESSION['user']['id'];
 }
 $disObj= new action();
   ?>
@@ -23,68 +25,77 @@ $disObj= new action();
 <body>
    <div class=' w-[80%] mx-auto my-5'>
    <div class="relative">
-        <nav class='flex justify-between items-center'>
-            <div class="m-2">
-                <p  class="m-2">blog</p>
-            </div>
-            <div class="transition duration-300 hidden lg:block">
-                <ul class="flex gap-5 items-center text-sm"> 
-                    <li class="cursor-pointer">Home</li>
-                    <li  class="cursor-pointer">Blog</li>
-                    <li class="cursor-pointer">Single post</li>
-                    <li class="cursor-pointer">Pages</li>
-                    <li class="cursor-pointer">Contact</li>
-                </ul>
-            </div>
-            <div id="navDis" class="z-30 lg:hidden cursor-pointer">
-                =
-            </div>
-            <div  class="flex  items-center">
-                <div  class="flex justify-bettwen items-center bg-gray-200 rounded-[30px] p-2" >
-                  <input class="bg-transparent flex-1 w-full focus:outline-none mx-2" type="text">
-                  <div class="cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                      </svg>
-                  </div>
+        <div class="fixed right-0 left-0 top-0 bg-white shadow-xl z-40 ">
+            <nav class='flex mx-auto w-[80%] justify-between items-center '>
+                <div class="m-2">
+                    <p  class="m-2"> <img class="w-[90px]" src="logos/Logo.png" alt=""></p>
                 </div>
-            </div>
-            <div id="accDis" class="z-30 mx-2 p-5">
-            <?php 
-                $personID = $_SESSION['user']['id'];
-                $con = $disObj->con();
-                  $select = 'SELECT * FROM project WHERE id = ?';
-                $stmt =  $con->prepare($select);
-                $stmt->bind_param('s', $personID);
-                $stmt->execute();
-            
-                $result = $stmt->get_result();
-                $username = $result->fetch_assoc();
-            ?>
-              <div class="flex items-center gap-5 cursor-pointer">
-                    <div  class=' relative h-[50px] w-[50px] rounded-full overflow-hidden'>
-                        <img class='h-[50px] w-[50px]' src="image/image 2.png" alt="">
+                <!-- <div class="transition duration-300 hidden lg:block">
+                    <ul class="flex gap-5 items-center text-sm"> 
+                        <li class="cursor-pointer">Home</li>
+                        <li  class="cursor-pointer">Blog</li>
+                        <li class="cursor-pointer">Single post</li>
+                        <li class="cursor-pointer">Pages</li>
+                        <li class="cursor-pointer">Contact</li>
+                    </ul>
+                </div>
+                <div id="navDis" class="z-30 lg:hidden cursor-pointer">
+                    =
+                </div> -->
+                <div  class="flex  items-center">
+                    <div  class="flex justify-bettwen items-center bg-gray-200 rounded-[30px] p-2" >
+                    <input class="bg-transparent flex-1 w-full focus:outline-none mx-2" type="text" id="search" placeholder="Search username...">
+                    <div class="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <?php 
+                    $personID = $_SESSION['user']['id'];
+                    $con = $disObj->con();
+                    $select = 'SELECT * FROM project WHERE id = ?';
+                    $stmt =  $con->prepare($select);
+                    $stmt->bind_param('s', $personID);
+                    $stmt->execute();
+                
+                    $result = $stmt->get_result();
+                    $username = $result->fetch_assoc();
+                ?>
+                </div>
+                <div id="resultDiv" class="hidden h-[200px] overflow-y-scroll  absolute w-[100%] flex flex-col items-center justify-center mx-auto mt-[290px]">
+                    <div class="absolute mx-auto  p-5 bg-white shadow-xl rounded-lg " id="results">
+                        <!-- <div class="flex items-center gap-5 ">
+                            <div class="w-[60px] h-[60px] rounded-full overflow-hidden"><img class="w-full h-full " src="<?php echo $username['profile_picture'] ?>" alt=""></div>
+                            <p>name</p>
+                        </div> -->
+                        
+                    </div>
+                </div>
+                <div id="accDis" class="z-30 mx-2 p-5">
+                <div class="flex items-center gap-5 cursor-pointer">
+                
+                        <div  class=' relative h-[50px] w-[50px] rounded-full overflow-hidden'>
+                            <img class='object-cover h-[50px] w-[50px]' src="<?php echo $username['profile_picture'] ?>" alt="">
+                        </div>
+                        <div>
+                            <p><?php echo $username['username'] ?></p>
+                        </div>
+                </div>
+                
+                    
+                </div>
+            </nav>
+        </div>
+        <div id="disSetting" class=" hidden opacity-0 z-50 scale-85 translate-y-5 transition-all duration-800 fixed top-0 bottom-0 right-0 left-0   bg-white shadow-lg p-5 flex flex-col items-center right-0 w-full md:w-[60%] lg:w-[30%] rounded-lg md:right-20">
+            <div class="w-full bg-white shadow-lg p-5">
+                <div class="flex justify-start gap-5 items-center border-b border-gray-400 pb-5">
+                    <div class="w-[50px] h-[50px] z-30 rounded-full overflow-hidden">
+                        <img class="w-[50px] h-[50px]" src="<?php echo $username['profile_picture'] ?>" alt="">
                     </div>
                     <div>
                         <p><?php echo $username['username'] ?></p>
-                    </div>
-              </div>
-  
-                <!-- <div class="flex justify-start items-center gap-5">
-                    <div class=" rounded-full h-[50px] w-[50px] overflow-hidden"><img class=" h-full w-full" src="image/image 2.png" alt=""></div>
-                <div><p class="text-lg">Name</p></div> -->
-               
-                
-            </div>
-        </nav>
-        <div id="disSetting" class="z-30 hidden opacity-0 scale-85 translate-y-5 transition-all duration-800 z-20 absolute bg-white shadow-lg p-5 flex flex-col items-center right-0 w-full md:w-[60%] lg:w-[30%] rounded-lg md:right-20">
-            <div class="w-full bg-white shadow-lg p-5">
-                <div class="flex justify-start gap-5 items-center border-b border-gray-400 pb-5">
-                    <div class="w-[50px] h-[50px] rounded-full overflow-hidden">
-                        <img class="w-[50px] h-[50px]" src="image/image 2.png" alt="">
-                    </div>
-                    <div>
-                        <p>Name</p>
                     </div>
                 </div>
                 <div id="postPagNav" class="cursor-pointer mt-5 w-full py-2 rounded-lg bg-gray-500 transition duration-300 hover:bg-gray-800 text-white text-center">
@@ -138,21 +149,9 @@ $disObj= new action();
         </div>
     </div>
     <div>
-        <div class="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] rounded-lg overflow-hidden mt-5">
+        <div class="relative mt-[200px] w-full h-[40vh] md:h-[50vh] lg:h-[60vh] rounded-lg overflow-hidden mt-5">
             <img class="w-full " src="image/image 2.png" alt="">
         </div>
-        <!-- <div class="absolute w-[60%] md:w-[400px] bottom-[510px]  left-[60px] lg:bottom-[255px] md:left-[300px] p-2 text-lg shadow-lg bg-white md:left-[200] md:bottom-[380px]  md:h-[20vh] lg:h-[25vh] rounded-lg flex flex-col justify-center gap-2 md:gap-5">
-            <div><p class="inline rounded-lg p-[4px] bg-blue-600 text-white">Technology</p></div>
-            <div>
-                <p class= " font-bold text-sm md:text-xl">The Inpact of Technology on The Work Place : How Technology is Changing</p>
-
-            </div>
-            <div class="flex items-center gap-[20px]">
-              <div class="w-[60px] h-[60px] rounded-full overflow-hidden" ><img class="w-full h-full" src="image/image 2.png" alt=""></div>
-              <div class="text-sm text-gray-600"><p>name</p></div>
-              <div  class="text-sm text-gray-600"><p>date</p></div>
-            </div>
-        </div> -->
     </div>
     <div>
         <div class='h-[50px] w-[100px]'>
@@ -186,19 +185,18 @@ $disObj= new action();
                       break;
                   }
               }
-            //   var_dump($users[0]['images']);
-       ?>
+              ?>
     <div class="mt-[100px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
         <?php foreach($users as $index => $user): ?>
             <div class="singlePost flex flex-col gap-5 p-5 h-[] rounded border border-gray-200 m-2">
-                <div id="" class=" h-[20vh]"><img class="cursor-pointer hover: rounded h-full w-full" src="DBimages/<?php echo $users[$index]['images']?>"  alt=""></div>
+                <div id="" class=" h-[20vh]"><img class="object-cover transition duration-300 cursor-pointer hover: rounded h-full w-full" src="DBimages/<?php echo $users[$index]['images']?>"  alt=""></div>
                 <div><p class="text-blue-500 font-bold "><?php echo $users[$index]['title'] ?></p></div>
                 
                 <input class="hidden" name="postId" value="<?php echo $users[$index]['id'] ?>" type="text">
                 <div class=" flex justify-start gap-10 items-center">
                 <?php
                 $id =  $users[$index]['user_id'];
-                  $select = 'SELECT username FROM project WHERE id = ?';
+                  $select = 'SELECT username,profile_picture FROM project WHERE id = ?';
                   $stmt = $con->prepare($select);
                   $stmt->bind_param('s', $id);
                   $stmt->execute();
@@ -207,10 +205,10 @@ $disObj= new action();
                   $Names = $result->fetch_assoc();
                 ?>
                 <div class="flex justify-start items-center gap-5">
-                    <div class=" rounded-full h-[50px] w-[50px] overflow-hidden"><img class=" h-full w-full" src="image/image 2.png" alt=""></div>
+                    <div class=" rounded-full h-[50px] w-[50px] overflow-hidden"><img class=" h-full w-full" src="<?php echo $Names['profile_picture']  ?>" alt=""></div>
                 <div><p class="text-lg"><?php echo $Names['username'] ?></p></div>
                 </div>
-                <div><p class="text-lg"><?php echo $users[$index]['time-date'] ?></p></div>
+                <div><p class="text-lg"><?php  ?></p></div>
             </div>
     </div>
         <?php endforeach ?>
@@ -288,6 +286,46 @@ $disObj= new action();
  
  </div>
 </div>
+<script>
+document.getElementById("search").addEventListener("keyup", async () => {
+    let query = document.getElementById("search").value;
+    let resultsDiv = document.getElementById("results");
+    let resultContainer = document.getElementById('resultDiv');
+
+    if (query.length > 0) {
+        resultContainer.classList.remove('hidden'); // Show results
+
+        try {
+            let res = await fetch(`search.php?username=${query}`);
+            let data = await res.json(); // Wait for JSON conversion
+
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (data.length === 0) {
+                resultContainer.classList.add('hidden'); // Hide if no results
+            } else {
+                data.forEach(user => {
+                    resultsDiv.innerHTML += `<div></div>`;
+                    resultsDiv.innerHTML += `
+                       <div class="flex items-center gap-5 ">
+                            <div class="w-[60px] h-[60px] rounded-full overflow-hidden"><img class="w-full h-full object-cover" src="${user.profile_picture}" alt=""></div>
+                            <p>${user.username}</p>
+                            <input type="text" ${user.username} name="postId" class="hidden">
+                        </div>
+                    `
+                });
+            }
+
+        } catch (error) {
+            console.log("Error fetching search results:", error);
+        }
+    } else {
+        resultContainer.classList.add('hidden'); // Hide if input is empty
+    }
+});
+
+
+</script>
 <script src="homePage.js?v=<?php echo time(); ?>"></script>
 
 </body>

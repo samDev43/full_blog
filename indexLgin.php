@@ -21,6 +21,7 @@
     </div>
 
     <script>
+       
         document.getElementById('sighUp').addEventListener('submit', async (input) => {
             input.preventDefault(); // Fixed the typo
             let userNPhone = document.getElementById('userNPhone').value;

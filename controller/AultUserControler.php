@@ -84,7 +84,7 @@
       public function disSinglePost(){
         $con = $this->con();
         // $con = $singlePost->con();
-        if(!isset( $_SESSION['eachId'])){
+        if(!isset($_SESSION['user']['id'])){
           echo $_SESSION['eachId'];
           echo $_SESSION['user']['id'];
           echo 'you have to log in';
@@ -102,6 +102,90 @@
         }
         return $post;
       }
+
+
+      public function changeUserInfoName($changeName,$changeEmail){
+        $responce = [];
+        $fields = [];
+        $values = [];
+       $con = $this->con();
+        if (!empty($changeName)) {
+            $fields[] = "	username = ?";
+            $values[] = $changeName;
+        }
         
+        if (!empty($changeEmail)) {
+            $fields[] = "email = ?";
+            $values[] = $changeEmail;
+        }
+    
+        if (count($fields) > 0) {
+            $sql = "UPDATE project SET " . implode(", ", $fields) . " WHERE id = ?";
+            $values[] = $_SESSION['user']['id']; // Adding user ID for the WHERE clause
+    
+            $stmt = $con->prepare($sql);
+            $stmt->execute($values);
+            if($stmt->execute($values)){
+              $responce = ['success'];
+            }else{
+              $responce = ['failed'];
+            }
+        }
+        echo json_encode($responce);
+
+
+      }
+
+      public function changeProfilePicture($imageTmpPath, $destination) {
+        $response = [];
+        $con = $this->con();
+     
+    
+        if (empty($imageTmpPath)) {
+            echo json_encode(["error" => "No image provided"]);
+            exit;
+        }
+
+        $folder = "profilePicture/$destination";
+        move_uploaded_file($imageTmpPath, $folder);
+        // if (!move_uploaded_file($imageTmpPath, $folder)) {
+        //     exit;
+        //   }
+        // Ensure the image is properly sanitizedproject
+        $sql = "UPDATE project SET 	profile_picture = ? WHERE id = ?";
+        $stmt = $con->prepare($sql);
+    
+        if ($stmt) {
+            $stmt->execute([$folder, $_SESSION['user']['id']]);
+            if($stmt->execute([$folder, $_SESSION['user']['id']])){
+              $response = ["status" => "success"];
+            }else{
+              $response = ["status" => "failed", "message" => "No rows affected"];
+            }
+    
+        } else {
+            $response = ["status" => "error", "message" => "Query preparation failed"];
+        }
+    
+        echo json_encode($response);
+    }
+
+    public function deletePost($id){
+      // echo $id;
+      $con = $this->con();
+      $sql = 'DELETE FROM personPost WHERE id = ?';
+      $stmt = $con->prepare($sql);
+      $stmt->bind_param('s', $id);
+      $stmt->execute();
+      if($stmt->execute()){
+        echo json_encode('ok');
+        // header('Location: http://localhost/blog_project/homePage.php');
+      }else{
+        echo json_encode('notOk');
+        exit;
+        
+      }
+    }
+    
       }
 ?>

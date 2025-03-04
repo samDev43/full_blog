@@ -1,12 +1,28 @@
+if(document.getElementById('editMenue')){
+    let editDisplay = document.getElementById('editDisplay');
+    document.getElementById('editMenue').addEventListener('click',()=>{
+        console.log(editDisplay);
+        document.getElementById('overlay').classList.remove('hidden')
+        editDisplay.classList.remove('hidden')
+        setTimeout(()=>{
+            editDisplay.classList.remove('scale-85', 'transition-y-2', 'opacity-0');
+            editDisplay.classList.add('scale-100', 'transition-y-0', 'opacity-100')
+        }, 10)
+    })
+
+    document.getElementById('closeeditMenue').addEventListener('click',()=>{
+        editDisplay.classList.add('scale-85', 'transition-y-2', 'opacity-0');
+        editDisplay.classList.remove('scale-100', 'transition-y-0', 'opacity-100')
+        
+        setTimeout(()=>{
+            document.getElementById('overlay').classList.add('hidden')
+            editDisplay.classList.add('hidden')
+        }, 10)
+    })
+    
+}
 
 if(document.getElementById('navDis')){
-    // document.getElementById('navDis').addEventListener('click',()=>{
-    //     
-    //     console.log();
-        
-    //     document.getElementById('smNav').classList.toggle('hidden')
-    // });
-
     document.getElementById("navDis").addEventListener("click", function () {
         let menu = document.getElementById("smNav");
         let overlay = document.getElementById('overlay')
@@ -35,15 +51,9 @@ if(document.getElementById('navDis')){
                 menu.classList.add("hidden");
             }, 10);
         }
-    });
-    
-    
+    }); 
 }
 if(document.getElementById('accDis')){
-    // document.getElementById('accDis').addEventListener('click',()=>{
-    //     // document.getElementById('disSetting').classList.toggle('hidden')
-    
-    // })
     document.getElementById("accDis").addEventListener("click", function () {
         let menu = document.getElementById("disSetting");
         let overlay = document.getElementById('overlay')
@@ -81,7 +91,6 @@ if(document.getElementById('mYPostNav')){
     })
 }
 if(document.querySelectorAll('.singlePost')){
-    console.log(document.querySelectorAll('.singlePost'));
     
     document.querySelectorAll('.singlePost').forEach(post => {
         post.addEventListener('click', () => {
@@ -136,7 +145,7 @@ if(document.querySelectorAll('.singlePost')){
         })
         document.getElementById('AcceptLogout').addEventListener('click',()=>{
             closeModal();
-            location.href= 'http://localhost/blog_project/indexSignup.php';
+            location.href= 'http://localhost/blog_project/newSignUp.php';
         })
     }
     if(document.getElementById('viewMyProfile')){
@@ -144,3 +153,49 @@ if(document.querySelectorAll('.singlePost')){
             location.href = 'http://localhost/blog_project/profile.php'
         })
     }
+
+
+    if(document.getElementById('toSign')){
+        document.getElementById('toSign').addEventListener('click', ()=>{
+            document.getElementById('profile').classList.add('hidden')
+            document.getElementById('sign').classList.remove('hidden')
+            document.getElementById('toProfil').classList.remove('hidden')
+            document.getElementById('toSign').classList.add('hidden')
+        })
+        document.getElementById('toProfil').addEventListener('click', ()=>{
+            document.getElementById('profile').classList.remove('hidden')
+            document.getElementById('sign').classList.add('hidden')
+            document.getElementById('toSign').classList.toggle('hidden')
+            document.getElementById('toProfil').classList.add('hidden')
+        })
+        
+        document.getElementById('menuIcon').addEventListener('click', ()=>{ 
+            let  sideNav = document.getElementById('sideNav')
+            console.log(sideNav.classList.contains('hidden'));
+            let sideNavMenue = document.getElementById('sideNavMenue')
+            if(sideNav.classList.contains('hidden')){
+                  sideNav.classList.remove('hidden');
+                  setTimeout(() => {
+                    sideNavMenue.classList.remove("opacity-0", "scale-85", "translate-x-2");
+                    sideNavMenue.classList.add('scale-100', 'opacity-100', "translate-x-0")
+                  }, 10);
+             }else{
+                sideNavMenue.classList.remove('scale-100', 'opacity-100', "translate-x-0")
+                sideNavMenue.classList.add('scale-85', 'opacity-0', 'translate-x-2')
+                setTimeout(() => {
+                    sideNav.classList.add('hidden');
+                  }, 10);
+             }
+
+             document.getElementById('settingPage').addEventListener('click',()=>{
+                console.log('what');
+                
+                 location.href= 'http://localhost/blog_project/settings.php';
+             })
+
+             document.getElementById('profileSettingPage').addEventListener('click',()=>{
+                location.href= 'http://localhost/blog_project/setProfile.php';
+             })
+
+
+            })}

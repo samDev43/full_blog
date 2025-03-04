@@ -65,7 +65,7 @@ class logSign extends connection {
             }
 
         } catch (\Throwable $th) {
-            $response = ['status' => 'error', 'message' => $th->getMessage()];
+            $response = ['status' => 'eror', 'message' => $th->getMessage()];
         }
 
         echo json_encode($response);
@@ -90,7 +90,7 @@ class logSign extends connection {
 
         if(preg_match($regex, $userEmail)){
             // $responce = ['message'=>'its not email',];
-            $check = 'Phone_number';
+            $check = 'email';
         }else{
             $check = 'username';
             // $responce = ['message'=>'its  email',];
