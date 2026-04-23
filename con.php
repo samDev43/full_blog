@@ -18,8 +18,6 @@ session_start();
         $this->con = new mysqli($this->host,$this->user, $this->password, $this->db);
         if($this->con->connect_error){
             echo json_encode($this->con->connect_error);
-        }else{
-            
         }
     }
     public function con(){
