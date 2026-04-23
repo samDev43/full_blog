@@ -1,0 +1,5 @@
+/src/auth/                @org/security-team
+/src/crypto/              @org/security-team
+/iac/                     @org/platform-team @org/security-team
+/.github/workflows/       @org/platform-team
+/policies/                @org/security-team
